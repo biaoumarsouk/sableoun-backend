@@ -73,4 +73,43 @@ class OrderController extends Controller
             return response()->json(['message' => 'Une erreur est survenue lors de la création de la commande.'], 500);
         }
     }
+
+    public function placedOrders(Request $request)
+    {
+        $orders = $request->user()
+            ->ordersPlaced()
+            // On charge le vendeur, y compris sa devise
+            ->with('seller:id,name,company_name,currency', 'items.product:id,name')
+            ->latest()->get();
+            
+        return response()->json($orders);
+    }
+
+    public function receivedOrders(Request $request)
+    {
+        $orders = $request->user()
+            ->ordersReceived()
+            // On charge le client, y compris sa devise
+            ->with('client:id,name,currency', 'items.product:id,name')
+            ->latest()->get();
+
+        return response()->json($orders);
+    }
+
+    public function show(Request $request, Order $order)
+    {
+        // On vérifie que l'utilisateur connecté est soit le client, soit le vendeur de la commande.
+        if ($request->user()->id !== $order->user_id && $request->user()->id !== $order->seller_id) {
+            abort(403, 'Action non autorisée.');
+        }
+
+        // On charge toutes les relations nécessaires pour l'affichage
+        $order->load([
+            'client:id,name,email,phone',
+            'seller:id,name,company_name,email,phone',
+            'items.product:id,name,image_path'
+        ]);
+
+        return response()->json($order);
+    }
 }

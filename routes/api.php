@@ -69,4 +69,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/checkout', [SubscriptionController::class, 'createCheckoutLink']);
 
     Route::post('/order', [OrderController::class, 'placeOrder']);
+    Route::get('/orders/placed', [OrderController::class, 'placedOrders']);
+    Route::get('/orders/received', [OrderController::class, 'receivedOrders']);
+    Route::get('/orders/{order}', [OrderController::class, 'show']);
 });

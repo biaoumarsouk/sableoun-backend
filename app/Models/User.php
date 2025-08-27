@@ -100,4 +100,17 @@ class User extends Authenticatable
         // Fonction pratique pour vérifier si l'utilisateur est abonné
         return $this->subscription()->exists();
     }
+
+    public function ordersPlaced()
+    {
+        return $this->hasMany(Order::class, 'user_id');
+    }
+
+    /**
+     * Les commandes qu'un utilisateur a reçues (en tant que vendeur).
+     */
+    public function ordersReceived()
+    {
+        return $this->hasMany(Order::class, 'seller_id');
+    }
 }
