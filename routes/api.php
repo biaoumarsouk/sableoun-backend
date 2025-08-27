@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\AfficheController;
 use App\Http\Controllers\Api\ForgotPasswordController;
 use App\Http\Controllers\Api\MessageController; 
 use App\Http\Controllers\Api\SubscriptionController;
+use App\Http\Controllers\Api\OrderController;
 /*
 |--------------------------------------------------------------------------
 | Routes Publiques
@@ -66,4 +67,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/plans', [SubscriptionController::class, 'plans']);
     // Créer un lien de paiement pour s'abonner
     Route::post('/checkout', [SubscriptionController::class, 'createCheckoutLink']);
+
+    Route::post('/order', [OrderController::class, 'placeOrder']);
 });
