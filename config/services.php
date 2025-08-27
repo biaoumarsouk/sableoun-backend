@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'mailjet' => [
+        'transport' => 'mailjet',
+        'key' => env('MAILJET_KEY'),
+        'secret' => env('MAILJET_SECRET'),
+    ],
+
 ];
