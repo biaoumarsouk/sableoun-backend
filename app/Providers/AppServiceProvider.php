@@ -10,6 +10,9 @@ use App\Models\User;
 use App\Models\Product;
 use App\Models\Message;
 use App\Models\Affiche;
+use Illuminate\Support\Facades\Mail;
+use Symfony\Component\Mailer\Bridge\Mailjet\Transport\MailjetTransportFactory;
+use Symfony\Component\Mailer\Transport\Dsn;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -30,6 +33,18 @@ class AppServiceProvider extends ServiceProvider
         ResetPassword::createUrlUsing(function (object $notifiable, string $token) {
             // Cela redirige l'utilisateur vers votre frontend sur Vercel
             return 'https://sableoun.vercel.app/reset-password?token='.$token.'&email='.$notifiable->getEmailForPasswordReset();
+        });
+
+
+        Mail::extend('mailjet', function () {
+            return (new MailjetTransportFactory)->create(
+                new Dsn(
+                    'mailjet+api',
+                    'default',
+                    config('services.mailjet.key'),
+                    config('services.mailjet.secret')
+                )
+            );
         });
 
         // 2. Règle pour les produits
