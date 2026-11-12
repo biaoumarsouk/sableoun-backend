@@ -47,6 +47,8 @@ class AppServiceProvider extends ServiceProvider
             );
         });
 
+        Schema::defaultStringLength(191);
+
         // 2. Règle pour les produits
         Gate::define('manage-product', function (User $user, Product $product) {
             return $user->id === $product->user_id;
