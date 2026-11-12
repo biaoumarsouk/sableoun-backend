@@ -17,7 +17,7 @@ return new class extends Migration
             $table->decimal('price', 10, 2);
             $table->string('currency', 3);
             $table->string('interval'); // "month" ou "year"
-            $table->json('features')->nullable();
+            $table->longText('features')->nullable();
             $table->string('stripe_price_id')->nullable(); // L'ID du prix sur Stripe
             $table->timestamps();
         });
